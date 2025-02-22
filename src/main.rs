@@ -45,6 +45,10 @@ struct _fizzbuzz {
     resources: HashSet<ResourceType>
 }
 
+struct _print {
+    resources: HashSet<ResourceType>
+}
+
 impl _nGen {
     fn rule(&mut self, _fizzbuzz_resources: &mut HashSet<ResourceType>) {
         let mut to_replace = Vec::new();
@@ -71,7 +75,7 @@ impl _nGen {
 }
 
 impl _fizzbuzz {
-    fn rule(&mut self) {
+    fn rule(&mut self, _print_resources: &mut HashSet<ResourceType>) {
         let mut to_replace = Vec::new();
         
         /*
@@ -103,11 +107,47 @@ impl _fizzbuzz {
 
             self.resources.insert(ResourceType::String(String::from("fizzbuzz")));
         }
-        
+
         // 要素の置き換え
         for (old, new) in to_replace {
             self.resources.remove(&old);
             self.resources.insert(new);
+        }
+        
+        let mut to_remove = Vec::new();
+        for resource in self.resources.iter() {
+            if let ResourceType::Int(value) = resource {
+                _print_resources.insert(ResourceType::Int(*value));
+                to_remove.push(ResourceType::Int(*value));
+            }
+            if let ResourceType::String(value) = resource {
+                _print_resources.insert(ResourceType::String(value.to_string()));
+                to_remove.push(ResourceType::String(value.to_string()));
+            }
+        }
+        for resource in to_remove {
+            self.resources.remove(&resource);
+        }
+    }
+}
+
+impl _print {
+    fn rule(&mut self) {
+        let mut to_remove = Vec::new();
+        for resource in self.resources.iter() {
+            match resource {
+                ResourceType::String(value) => {
+                    println!("{}", value);
+                    to_remove.push(ResourceType::String(value.to_string()));
+                },
+                ResourceType::Int(value) => {
+                    println!("{}", value);
+                    to_remove.push(ResourceType::Int(*value));
+                }
+            }
+        }
+        for resource in to_remove {
+            self.resources.remove(&resource);
         }
     }
 }
@@ -119,14 +159,25 @@ fn main() {
     let mut fizzbuzz = _fizzbuzz {
         resources: HashSet::new()
     };
+    let mut print = _print {
+        resources: HashSet::new()
+    };
     nGen.resources.insert(ResourceType::Int(1));
     nGen.rule(&mut fizzbuzz.resources);
-    fizzbuzz.rule();
+    fizzbuzz.rule(&mut print.resources);
+    print.rule();
+    println!("{:?}", nGen.resources);
     println!("{:?}", fizzbuzz.resources);
+
     nGen.rule(&mut fizzbuzz.resources);
-    fizzbuzz.rule();
+    fizzbuzz.rule(&mut print.resources);
+    print.rule();
+    println!("{:?}", nGen.resources);
     println!("{:?}", fizzbuzz.resources);
+
     nGen.rule(&mut fizzbuzz.resources);
-    fizzbuzz.rule();
+    fizzbuzz.rule(&mut print.resources);
+    print.rule();
+    println!("{:?}", nGen.resources);
     println!("{:?}", fizzbuzz.resources);
 }
