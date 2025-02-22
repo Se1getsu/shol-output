@@ -17,7 +17,12 @@ impl _nGen {
         // 変更が必要な要素を特定
         for resource in self.resources.iter() {
             if let ResourceType::Int(value) = resource {
-                to_replace.push((ResourceType::Int(*value), ResourceType::Int(*value + 1)));
+                if *value < 4 {
+                    to_replace.push((ResourceType::Int(*value), ResourceType::Int(*value + 1)));
+                }
+                if value % 2 == 0 {
+                    to_replace.push((ResourceType::Int(*value), ResourceType::Int(*value * 10)));
+                }
             }
         }
         
