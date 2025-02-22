@@ -72,7 +72,43 @@ impl _nGen {
 
 impl _fizzbuzz {
     fn rule(&mut self) {
-        println!("{:?}", self.resources);
+        let mut to_replace = Vec::new();
+        
+        /*
+        . $ < 100 # $ + 1 
+        | $ #fizzbuzz $
+        */
+        for resource in self.resources.iter() {
+            if let ResourceType::Int(value) = resource {
+                if value % 3 == 0  {
+                    to_replace.push((ResourceType::Int(*value), ResourceType::String(std::string::String::from("fizz"))));
+                }
+                if value % 5 == 0 {
+                    to_replace.push((ResourceType::Int(*value), ResourceType::String(std::string::String::from("buzz"))));
+                }
+            }
+        }
+        for (old, new) in to_replace {
+            self.resources.remove(&old);
+            self.resources.insert(new);
+        }
+
+        // . $ = Fizz, $ = Buzz # FizzBuzz
+        let mut to_replace = Vec::new();
+        if self.resources.contains(&ResourceType::String(String::from("fizz"))) &&
+           self.resources.contains(&ResourceType::String(String::from("buzz"))) {
+
+            self.resources.remove(&ResourceType::String(String::from("fizz")));
+            self.resources.remove(&ResourceType::String(String::from("buzz")));
+
+            self.resources.insert(ResourceType::String(String::from("fizzbuzz")));
+        }
+        
+        // 要素の置き換え
+        for (old, new) in to_replace {
+            self.resources.remove(&old);
+            self.resources.insert(new);
+        }
     }
 }
 
@@ -86,8 +122,11 @@ fn main() {
     nGen.resources.insert(ResourceType::Int(1));
     nGen.rule(&mut fizzbuzz.resources);
     fizzbuzz.rule();
+    println!("{:?}", fizzbuzz.resources);
     nGen.rule(&mut fizzbuzz.resources);
     fizzbuzz.rule();
+    println!("{:?}", fizzbuzz.resources);
     nGen.rule(&mut fizzbuzz.resources);
     fizzbuzz.rule();
+    println!("{:?}", fizzbuzz.resources);
 }
