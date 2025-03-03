@@ -44,12 +44,7 @@ impl _kemo {
         let mut 使用済み: Vec<bool> = vec![false; self.resources.len()];
         let mut capture_process: Vec<usize> = vec![0;3];
         let mut 探索中のキャプチャ: usize = 0; // 0 or 1 or 2
-        while capture_process.iter().all(|&x| x < self.resources.len()) {
-            println!("===========");
-            println!("{:?}", insertions);
-            println!("{:?}", 使用済み);
-            println!("{:?}", capture_process);
-            println!("{:?}", 探索中のキャプチャ);
+        while capture_process[探索中のキャプチャ] < self.resources.len() {
             if 使用済み[capture_process[探索中のキャプチャ]] {
                 capture_process[探索中のキャプチャ] += 1;
                 continue;
@@ -83,6 +78,9 @@ impl _kemo {
                 },
                 _ => {}
             }
+        }
+        for i in 0..探索中のキャプチャ {
+            使用済み[capture_process[i] - 1] = false;
         }
         let mut buf = Vec::new();
         for (i, resource) in self.resources.iter().enumerate() {
