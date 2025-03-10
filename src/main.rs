@@ -18,51 +18,51 @@
 use std::collections::HashMap;
 
 #[derive(Eq,Debug,PartialEq,Clone)]
-enum ResourceType {
+enum ValueType {
   Int(i32),
   String(String),
   Bool(bool),
 }
 trait Colony {
   fn debug_print(&mut self);
-  fn receive(&mut self, g: Vec<ResourceType>);
-  fn rule(&mut self) -> HashMap<usize, Vec<ResourceType>>;
+  fn receive(&mut self, g: Vec<ValueType>);
+  fn rule(&mut self) -> HashMap<usize, Vec<ValueType>>;
 }
 
 struct Colony_nGen {
-  resources: Vec<ResourceType>,
+  resources: Vec<ValueType>,
 }
 impl Colony for Colony_nGen {
   fn debug_print(&mut self) { println!("{:?}", self.resources); }
-  fn receive(&mut self, g: Vec<ResourceType>) { self.resources.extend(g); }
-  fn rule(&mut self) -> HashMap<usize, Vec<ResourceType>> {
-    let mut gifts: HashMap<usize, Vec<ResourceType>> = HashMap::new();
+  fn receive(&mut self, g: Vec<ValueType>) { self.resources.extend(g); }
+  fn rule(&mut self) -> HashMap<usize, Vec<ValueType>> {
+    let mut gifts: HashMap<usize, Vec<ValueType>> = HashMap::new();
     let mut buf = Vec::new();
     for (i, resource) in self.resources.iter().enumerate() {
       let mut no_match = true;
       match resource {
-        ResourceType::Bool(v) => {
+        ValueType::Bool(v) => {
           {
             let entry = gifts.entry(1).or_default();
-            entry.push(ResourceType::Bool(v.clone()));
+            entry.push(ValueType::Bool(v.clone()));
             no_match = false;
           }
         }
-        ResourceType::Int(v) => {
+        ValueType::Int(v) => {
           if (v.clone()<100) {
-            buf.push(ResourceType::Int((v.clone()+1)));
+            buf.push(ValueType::Int((v.clone()+1)));
             no_match = false;
           }
           {
             let entry = gifts.entry(1).or_default();
-            entry.push(ResourceType::Int(v.clone()));
+            entry.push(ValueType::Int(v.clone()));
             no_match = false;
           }
         }
-        ResourceType::String(v) => {
+        ValueType::String(v) => {
           {
             let entry = gifts.entry(1).or_default();
-            entry.push(ResourceType::String(v.clone()));
+            entry.push(ValueType::String(v.clone()));
             no_match = false;
           }
         }
@@ -77,30 +77,30 @@ impl Colony for Colony_nGen {
 }
 
 struct Colony_fizzBuzz {
-  resources: Vec<ResourceType>,
+  resources: Vec<ValueType>,
 }
 impl Colony for Colony_fizzBuzz {
   fn debug_print(&mut self) { println!("{:?}", self.resources); }
-  fn receive(&mut self, g: Vec<ResourceType>) { self.resources.extend(g); }
-  fn rule(&mut self) -> HashMap<usize, Vec<ResourceType>> {
-    let mut gifts: HashMap<usize, Vec<ResourceType>> = HashMap::new();
+  fn receive(&mut self, g: Vec<ValueType>) { self.resources.extend(g); }
+  fn rule(&mut self) -> HashMap<usize, Vec<ValueType>> {
+    let mut gifts: HashMap<usize, Vec<ValueType>> = HashMap::new();
     let mut buf = Vec::new();
     for (i, resource) in self.resources.iter().enumerate() {
       let mut no_match = true;
       match resource {
-        ResourceType::String(v) => {
+        ValueType::String(v) => {
         }
-        ResourceType::Int(v) => {
+        ValueType::Int(v) => {
           if ((v.clone()%3)==0) {
-            buf.push(ResourceType::String("Fizz".to_owned()));
+            buf.push(ValueType::String("Fizz".to_owned()));
             no_match = false;
           }
           if ((v.clone()%5)==0) {
-            buf.push(ResourceType::String("Buzz".to_owned()));
+            buf.push(ValueType::String("Buzz".to_owned()));
             no_match = false;
           }
         }
-        ResourceType::Bool(v) => {
+        ValueType::Bool(v) => {
         }
       }
       if no_match {
@@ -108,7 +108,7 @@ impl Colony for Colony_fizzBuzz {
       }
     }
     self.resources = buf;
-    let mut insertions: HashMap<usize, Vec<ResourceType>> = HashMap::new();
+    let mut insertions: HashMap<usize, Vec<ValueType>> = HashMap::new();
     let mut some_used: Vec<bool> = vec![false; self.resources.len()];
     let mut used: Vec<bool> = vec![false; self.resources.len()];
     let mut capt_prog: Vec<usize> = vec![0;2];
@@ -121,7 +121,7 @@ impl Colony for Colony_fizzBuzz {
       match capt_idx {
         0 => {
           if match &self.resources[capt_prog[0]] {
-            ResourceType::String(v) => v.clone() == "Fizz".to_owned(),
+            ValueType::String(v) => v.clone() == "Fizz".to_owned(),
             _ => false
           } {
             capt_idx = 1;
@@ -132,7 +132,7 @@ impl Colony for Colony_fizzBuzz {
         },
         1 => {
           if match &self.resources[capt_prog[1]] {
-            ResourceType::String(v) => v.clone() == "Buzz".to_owned(),
+            ValueType::String(v) => v.clone() == "Buzz".to_owned(),
             _ => false
           } {
             capt_idx = 0;
@@ -140,7 +140,7 @@ impl Colony for Colony_fizzBuzz {
             some_used[capt_prog[1]] = true;
             capt_prog[1] += 1;
             let entry = insertions.entry(capt_prog[0]-1).or_default();
-            entry.push(ResourceType::String("FizzBuzz".to_owned()));
+            entry.push(ValueType::String("FizzBuzz".to_owned()));
           } else {
             capt_prog[1] += 1;
           }
@@ -168,24 +168,24 @@ impl Colony for Colony_fizzBuzz {
     for (i, resource) in self.resources.iter().enumerate() {
       let mut no_match = true;
       match resource {
-        ResourceType::Bool(v) => {
+        ValueType::Bool(v) => {
           {
             let entry = gifts.entry(2).or_default();
-            entry.push(ResourceType::Bool(v.clone()));
+            entry.push(ValueType::Bool(v.clone()));
             no_match = false;
           }
         }
-        ResourceType::Int(v) => {
+        ValueType::Int(v) => {
           {
             let entry = gifts.entry(2).or_default();
-            entry.push(ResourceType::Int(v.clone()));
+            entry.push(ValueType::Int(v.clone()));
             no_match = false;
           }
         }
-        ResourceType::String(v) => {
+        ValueType::String(v) => {
           {
             let entry = gifts.entry(2).or_default();
-            entry.push(ResourceType::String(v.clone()));
+            entry.push(ValueType::String(v.clone()));
             no_match = false;
           }
         }
@@ -200,18 +200,18 @@ impl Colony for Colony_fizzBuzz {
 }
 
 struct Colony_print {
-  resources: Vec<ResourceType>,
+  resources: Vec<ValueType>,
 }
 impl Colony for Colony_print {
   fn debug_print(&mut self) { println!("{:?}", self.resources); }
-  fn receive(&mut self, g: Vec<ResourceType>) { self.resources.extend(g); }
-  fn rule(&mut self) -> HashMap<usize, Vec<ResourceType>> {
-    let mut gifts: HashMap<usize, Vec<ResourceType>> = HashMap::new();
+  fn receive(&mut self, g: Vec<ValueType>) { self.resources.extend(g); }
+  fn rule(&mut self) -> HashMap<usize, Vec<ValueType>> {
+    let mut gifts: HashMap<usize, Vec<ValueType>> = HashMap::new();
     for resource in &self.resources {
       match resource {
-        ResourceType::String(v) => println!("{v}"),
-        ResourceType::Bool(v) => println!("{v}"),
-        ResourceType::Int(v) => println!("{v}"),
+        ValueType::String(v) => println!("{v}"),
+        ValueType::Bool(v) => println!("{v}"),
+        ValueType::Int(v) => println!("{v}"),
       }
     }
     self.resources = vec![];
@@ -223,7 +223,7 @@ fn main() {
   let mut colonies: Vec<Box<dyn Colony>> = Vec::new();
   colonies.push(Box::new(Colony_nGen {
     resources: vec![
-      ResourceType::Int(1),
+      ValueType::Int(1),
     ],
   }));
   colonies.push(Box::new(Colony_fizzBuzz {
