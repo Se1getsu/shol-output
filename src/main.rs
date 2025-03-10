@@ -22,6 +22,7 @@ enum ResourceType {
   Int(i32),
   String(String),
   Bool(bool),
+  Tuple(Vec<ResourceType>),
 }
 trait Colony {
   fn debug_print(&mut self);
