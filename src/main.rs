@@ -30,8 +30,8 @@ enum ResourceType {
 }
 trait Colony {
   fn debug_print(&mut self);
-  fn receive(&mut self, g: Vec<ValueType>);
-  fn rule(&mut self) -> HashMap<usize, Vec<ValueType>>;
+  fn receive(&mut self, g: Vec<ResourceType>);
+  fn rule(&mut self) -> HashMap<usize, Vec<ResourceType>>;
 }
 
 struct Colony_nGen {
@@ -39,8 +39,8 @@ struct Colony_nGen {
 }
 impl Colony for Colony_nGen {
   fn debug_print(&mut self) { println!("{:?}", self.resources); }
-  fn receive(&mut self, g: Vec<ValueType>) { self.resources.extend(g); }
-  fn rule(&mut self) -> HashMap<usize, Vec<ValueType>> {
+  fn receive(&mut self, g: Vec<ResourceType>) { self.resources.extend(g); }
+  fn rule(&mut self) -> HashMap<usize, Vec<ResourceType>> {
     let mut gifts: HashMap<usize, Vec<ValueType>> = HashMap::new();
     let mut buf = Vec::new();
     for (i, resource) in self.resources.iter().enumerate() {
@@ -86,8 +86,8 @@ struct Colony_fizzBuzz {
 }
 impl Colony for Colony_fizzBuzz {
   fn debug_print(&mut self) { println!("{:?}", self.resources); }
-  fn receive(&mut self, g: Vec<ValueType>) { self.resources.extend(g); }
-  fn rule(&mut self) -> HashMap<usize, Vec<ValueType>> {
+  fn receive(&mut self, g: Vec<ResourceType>) { self.resources.extend(g); }
+  fn rule(&mut self) -> HashMap<usize, Vec<ResourceType>> {
     let mut gifts: HashMap<usize, Vec<ValueType>> = HashMap::new();
     let mut buf = Vec::new();
     for (i, resource) in self.resources.iter().enumerate() {
@@ -209,8 +209,8 @@ struct Colony_print {
 }
 impl Colony for Colony_print {
   fn debug_print(&mut self) { println!("{:?}", self.resources); }
-  fn receive(&mut self, g: Vec<ValueType>) { self.resources.extend(g); }
-  fn rule(&mut self) -> HashMap<usize, Vec<ValueType>> {
+  fn receive(&mut self, g: Vec<ResourceType>) { self.resources.extend(g); }
+  fn rule(&mut self) -> HashMap<usize, Vec<ResourceType>> {
     let mut gifts: HashMap<usize, Vec<ValueType>> = HashMap::new();
     for resource in &self.resources {
       match resource {
