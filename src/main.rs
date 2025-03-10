@@ -23,6 +23,11 @@ enum ValueType {
   String(String),
   Bool(bool),
 }
+#[derive(Eq,Debug,PartialEq,Clone)]
+enum ResourceType {
+  Value(ValueType),
+  Tuple(Vec<ResourceType>)
+}
 trait Colony {
   fn debug_print(&mut self);
   fn receive(&mut self, g: Vec<ValueType>);
