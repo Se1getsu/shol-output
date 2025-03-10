@@ -35,7 +35,7 @@ trait Colony {
 }
 
 struct Colony_nGen {
-  resources: Vec<ValueType>,
+  resources: Vec<ResourceType>,
 }
 impl Colony for Colony_nGen {
   fn debug_print(&mut self) { println!("{:?}", self.resources); }
@@ -82,7 +82,7 @@ impl Colony for Colony_nGen {
 }
 
 struct Colony_fizzBuzz {
-  resources: Vec<ValueType>,
+  resources: Vec<ResourceType>,
 }
 impl Colony for Colony_fizzBuzz {
   fn debug_print(&mut self) { println!("{:?}", self.resources); }
@@ -205,7 +205,7 @@ impl Colony for Colony_fizzBuzz {
 }
 
 struct Colony_print {
-  resources: Vec<ValueType>,
+  resources: Vec<ResourceType>,
 }
 impl Colony for Colony_print {
   fn debug_print(&mut self) { println!("{:?}", self.resources); }
