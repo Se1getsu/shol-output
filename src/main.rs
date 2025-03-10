@@ -67,6 +67,8 @@ impl Colony for Colony_nGen {
             no_match = false;
           }
         }
+        ResourceType::Tuple(v) => {
+        }
       }
       if no_match {
         buf.push(resource.clone());
@@ -102,6 +104,8 @@ impl Colony for Colony_fizzBuzz {
           }
         }
         ResourceType::Bool(v) => {
+        }
+        ResourceType::Tuple(v) => {
         }
       }
       if no_match {
@@ -190,6 +194,8 @@ impl Colony for Colony_fizzBuzz {
             no_match = false;
           }
         }
+        ResourceType::Tuple(v) => {
+        }
       }
       if no_match {
         buf.push(resource.clone());
@@ -213,6 +219,7 @@ impl Colony for Colony_print {
         ResourceType::String(v) => println!("{v}"),
         ResourceType::Bool(v) => println!("{v}"),
         ResourceType::Int(v) => println!("{v}"),
+        ResourceType::Tuple(v) => println!("{:?}", v),
       }
     }
     self.resources = vec![];
