@@ -223,7 +223,7 @@ fn main() {
   let mut colonies: Vec<Box<dyn Colony>> = Vec::new();
   colonies.push(Box::new(Colony_nGen {
     resources: vec![
-      ResourceType::Int(1),
+      vec![ResourceType::Int(1)],
     ],
   }));
   colonies.push(Box::new(Colony_fizzBuzz {
